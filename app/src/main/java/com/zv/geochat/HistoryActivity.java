@@ -11,8 +11,8 @@ import android.support.v7.widget.Toolbar;
 import android.view.View;
 import android.widget.TextView;
 
-import com.facebook.drawee.backends.pipeline.Fresco;
 import com.zv.geochat.model.ChatMessage;
+import com.zv.geochat.provider.ChatMessageStore;
 import com.zv.geochat.ui.adapter.ChatMessagesAdapter;
 
 import java.util.ArrayList;
@@ -27,6 +27,7 @@ public class HistoryActivity extends AppCompatActivity {
     SwipeToAction swipeToAction;
 
     List<ChatMessage> chatMessages = new ArrayList<>();
+    ChatMessageStore chatMessageStore;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -44,10 +45,7 @@ public class HistoryActivity extends AppCompatActivity {
             }
         });
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-
-        //----------------------------
-        // facebook image library
-        Fresco.initialize(this);
+        chatMessageStore = new ChatMessageStore(this);
 
         recyclerView = (RecyclerView) findViewById(R.id.recycler);
         LinearLayoutManager layoutManager = new LinearLayoutManager(this);
@@ -60,11 +58,11 @@ public class HistoryActivity extends AppCompatActivity {
         swipeToAction = new SwipeToAction(recyclerView, new SwipeToAction.SwipeListener<ChatMessage>() {
             @Override
             public boolean swipeLeft(final ChatMessage itemData) {
-                final int pos = removeBook(itemData);
-                displaySnackbar(itemData.getUserName() + " removed", "Undo", new View.OnClickListener() {
+                final int pos = removeChatMessage(itemData);
+                displaySnackbar("Message removed", "Undo", new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
-                        addBook(pos, itemData);
+                        addChatMessage(pos, itemData);
                     }
                 });
                 return true;
@@ -89,15 +87,10 @@ public class HistoryActivity extends AppCompatActivity {
 
 
         populate();
-        //----------------------------
     }
 
     private void populate() {
-        this.chatMessages.add(new ChatMessage("Peter", "Hi, my name is Peter!"));
-        this.chatMessages.add(new ChatMessage("John", "Hi, my name is John!"));
-        this.chatMessages.add(new ChatMessage("Rose", "Hi, my name is Rose!"));
-        this.chatMessages.add(new ChatMessage("Amanda", "Hi, my name is Amanda!"));
-        this.chatMessages.add(new ChatMessage("Mike", "Hi, my name is Mike!"));
+        this.chatMessages.addAll(chatMessageStore.getList());
     }
 
     private void displaySnackbar(String text, String actionName, View.OnClickListener action) {
@@ -113,16 +106,18 @@ public class HistoryActivity extends AppCompatActivity {
         snack.show();
     }
 
-    private int removeBook(ChatMessage chatMessage) {
+    private int removeChatMessage(ChatMessage chatMessage) {
         int pos = chatMessages.indexOf(chatMessage);
         chatMessages.remove(chatMessage);
         adapter.notifyItemRemoved(pos);
+        chatMessageStore.deleteById(chatMessage.getId());
         return pos;
     }
 
-    private void addBook(int pos, ChatMessage chatMessage) {
+    private void addChatMessage(int pos, ChatMessage chatMessage) {
         chatMessages.add(pos, chatMessage);
         adapter.notifyItemInserted(pos);
+        chatMessageStore.insert(chatMessage);
     }
 
 }

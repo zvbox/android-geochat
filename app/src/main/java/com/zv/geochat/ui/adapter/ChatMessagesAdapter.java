@@ -4,9 +4,9 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.TextView;
 
-import com.facebook.drawee.view.SimpleDraweeView;
 import com.zv.geochat.R;
 import com.zv.geochat.model.ChatMessage;
 
@@ -24,14 +24,14 @@ public class ChatMessagesAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
     public class ChatMessageViewHolder extends SwipeToAction.ViewHolder<ChatMessage> {
         public TextView userName;
         public TextView chatMessageBody;
-        public SimpleDraweeView imageView;
+        public ImageView imageView;
 
         public ChatMessageViewHolder(View v) {
             super(v);
 
             userName = (TextView) v.findViewById(R.id.userName);
             chatMessageBody = (TextView) v.findViewById(R.id.body);
-            imageView = (SimpleDraweeView) v.findViewById(R.id.image);
+            imageView = (ImageView) v.findViewById(R.id.image);
         }
     }
 

@@ -48,13 +48,12 @@
         android:layout_height="match_parent"
         android:padding="@dimen/item_padding">
 
-        <com.facebook.drawee.view.SimpleDraweeView
+        <ImageView
             android:id="@+id/image"
             android:layout_width="48dp"
             android:layout_height="48dp"
             android:layout_marginRight="10dp"
-            app:placeholderImage="@drawable/ic_message"
-            app:roundAsCircle="true"/>
+            android:src="@drawable/ic_message" />
 
         <TextView
             android:id="@+id/userName"

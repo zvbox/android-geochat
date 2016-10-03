@@ -19,7 +19,6 @@ import com.zv.geochat.service.ChatService;
 public class ChatActivityFragment extends Fragment {
     private static final String TAG = "ChatActivityFragment";
     EditText edtMessage;
-    String userName = "user1";
     public ChatActivityFragment() {
     }
 
@@ -34,7 +33,7 @@ public class ChatActivityFragment extends Fragment {
             public void onClick(View view) {
                 Snackbar.make(view, "Sending to Chat Service: Join", Snackbar.LENGTH_LONG)
                         .setAction("Action", null).show();
-                joinChat(userName);
+                joinChat();
             }
         });
 
@@ -70,20 +69,12 @@ public class ChatActivityFragment extends Fragment {
 
         edtMessage = (EditText) v.findViewById(R.id.edtMessage);
 
-        loadUserNameFromPreferences();
-
         return v;
     }
 
-    private void loadUserNameFromPreferences() {
-        SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(getContext());
-        userName = prefs.getString(Constants.KEY_USER_NAME, "Name");
-    }
-
-    private void joinChat(String userName){
+    private void joinChat(){
         Bundle data = new Bundle();
         data.putInt(ChatService.MSG_CMD, ChatService.CMD_JOIN_CHAT);
-        data.putString(ChatService.KEY_USER_NAME, userName);
         Intent intent = new Intent(getContext(), ChatService.class);
         intent.putExtras(data);
         getActivity().startService(intent);

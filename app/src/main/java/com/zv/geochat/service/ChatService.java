@@ -3,13 +3,20 @@ package com.zv.geochat.service;
 import android.app.NotificationManager;
 import android.app.Service;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Binder;
 import android.os.Bundle;
 import android.os.IBinder;
 import android.os.PowerManager;
+import android.preference.PreferenceManager;
 import android.util.Log;
 
+import com.zv.geochat.Constants;
+import com.zv.geochat.model.ChatMessage;
 import com.zv.geochat.notification.NotificationDecorator;
+import com.zv.geochat.provider.ChatMessageStore;
+
+import static com.zv.geochat.R.id.userName;
 
 public class ChatService extends Service {
     private static final String TAG = "ChatService";
@@ -25,6 +32,9 @@ public class ChatService extends Service {
     private NotificationManager notificationMgr;
     private PowerManager.WakeLock wakeLock;
     private NotificationDecorator notificationDecorator;
+    private ChatMessageStore chatMessageStore;
+
+    private String userName;
 
     public ChatService() {
     }
@@ -35,6 +45,8 @@ public class ChatService extends Service {
         super.onCreate();
         notificationMgr = (NotificationManager) getSystemService(NOTIFICATION_SERVICE);
         notificationDecorator = new NotificationDecorator(this, notificationMgr);
+        chatMessageStore = new ChatMessageStore(this);
+        loadUserNameFromPreferences();
 
         PowerManager powerManager = (PowerManager) getSystemService(POWER_SERVICE);
         wakeLock = powerManager.newWakeLock(PowerManager.PARTIAL_WAKE_LOCK, TAG);
@@ -92,12 +104,19 @@ public class ChatService extends Service {
         } else if (command == CMD_SEND_MESSAGE) {
             String messageText = (String) data.get(KEY_MESSAGE_TEXT);
             notificationDecorator.displaySimpleNotification("Sending message...", messageText);
+            chatMessageStore.insert(new ChatMessage(userName, messageText));
         } else if (command == CMD_RECEIVE_MESSAGE) {
-            String testUser = "User2";
+            String testUser = "Test User";
             String testMessage = "Simulated Message";
             notificationDecorator.displaySimpleNotification("New message...: "+ testUser, testMessage);
+            chatMessageStore.insert(new ChatMessage(testUser, testMessage));
         } else {
             Log.w(TAG, "Ignoring Unknown Command! id=" + command);
         }
+    }
+
+    private void loadUserNameFromPreferences() {
+        SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(this);
+        userName = prefs.getString(Constants.KEY_USER_NAME, "Default Name");
     }
 }
