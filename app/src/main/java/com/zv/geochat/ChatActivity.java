@@ -10,6 +10,8 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 
+import com.zv.geochat.service.ChatService;
+
 public class ChatActivity extends AppCompatActivity {
     private static final String TAG = "ChatActivity";
     @Override
@@ -45,9 +47,61 @@ public class ChatActivity extends AppCompatActivity {
             Intent intent = new Intent(getApplicationContext(), HistoryActivity.class);
             startActivity(intent);
             return true;
+        } else if (id == R.id.action_leave){
+            leaveChat();
+            finish(); // return to login screen
+            return true;
+        } else if (id == R.id.action_map){
+            // TODO: open Map screen
+            return true;
+        } else if (id == R.id.action_join_test){ // test only
+            joinChat();
+            return true;
+        } else if (id == R.id.action_receive_message_test){ // test only
+            simulateOnMessage();
+            return true;
+        } else if (id == R.id.action_leave_test){ // test only
+            leaveChat();
+            return true;
         }
-
         return super.onOptionsItemSelected(item);
     }
+
+
+    private void joinChat(){
+        Bundle data = new Bundle();
+        data.putInt(ChatService.CMD, ChatService.CMD_JOIN_CHAT);
+        Intent intent = new Intent(this, ChatService.class);
+        intent.putExtras(data);
+        startService(intent);
+    }
+
+
+    private void leaveChat(){
+        Bundle data = new Bundle();
+        data.putInt(ChatService.CMD, ChatService.CMD_LEAVE_CHAT);
+        Intent intent = new Intent(this, ChatService.class);
+        intent.putExtras(data);
+        startService(intent);
+    }
+
+    private void sendMessage(String messageText){
+        Bundle data = new Bundle();
+        data.putInt(ChatService.CMD, ChatService.CMD_SEND_MESSAGE);
+        data.putString(ChatService.KEY_MESSAGE_TEXT, messageText);
+        Intent intent = new Intent(this, ChatService.class);
+        intent.putExtras(data);
+        startService(intent);
+    }
+
+    private void simulateOnMessage(){
+        Bundle data = new Bundle();
+        data.putInt(ChatService.CMD, ChatService.CMD_RECEIVE_MESSAGE);
+        Intent intent = new Intent(this, ChatService.class);
+        intent.putExtras(data);
+        startService(intent);
+    }
+
+
 
 }

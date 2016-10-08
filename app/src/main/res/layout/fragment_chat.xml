@@ -13,72 +13,6 @@
     tools:showIn="@layout/activity_chat">
 
 
-    <LinearLayout
-        android:orientation="horizontal"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_alignParentTop="true"
-        android:layout_alignParentStart="true"
-        android:weightSum="3">
-
-        <Button
-            android:text="Join"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:id="@+id/btnJoinChat" />
-
-        <Button
-            android:text="Leave"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:id="@+id/btnLeaveChat" />
-
-
-        <Button
-            android:text="Receive"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:id="@+id/btnReceiveMessage" />
-
-    </LinearLayout>
-
-    <TableLayout
-        android:id="@+id/tableLayout"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_alignParentBottom="true"
-        android:layout_centerHorizontal="true">
-
-        <TableRow
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:orientation="vertical">
-
-            <EditText
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:inputType="textLongMessage"
-                android:ems="10"
-                android:layout_weight="5"
-                android:id="@+id/edtMessage"
-                android:layout_gravity="center_vertical"
-                android:hint="Type your message...." />
-
-            <ImageButton
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_gravity="center_vertical"
-                app:srcCompat="@android:drawable/ic_menu_send"
-                android:id="@+id/btnSendMessage"
-                android:layout_weight="1"
-                />
-        </TableRow>
-
-    </TableLayout>
-
     <ScrollView
         android:id="@+id/scrollViewChat"
         android:layout_width="match_parent"
@@ -93,5 +27,41 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent" />
     </ScrollView>
+
+    <TableLayout
+        android:id="@+id/tableLayout"
+        android:weightSum="10"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:layout_alignParentStart="true">
+
+        <TableRow
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="vertical">
+
+            <EditText
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:inputType="textLongMessage"
+                android:ems="10"
+                android:layout_weight="8"
+                android:id="@+id/edtMessage"
+                android:layout_gravity="center_vertical"
+                android:hint="Type your message...." />
+
+            <android.support.design.widget.FloatingActionButton
+                android:id="@+id/fab_send_message"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="bottom|end"
+                app:srcCompat="@drawable/ic_ab_send"
+                app:elevation="0dp" />
+
+        </TableRow>
+
+    </TableLayout>
+
 
 </RelativeLayout>

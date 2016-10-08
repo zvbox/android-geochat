@@ -4,16 +4,15 @@ import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
-import android.support.annotation.Nullable;
-import android.support.v4.app.Fragment;
 import android.os.Bundle;
+import android.support.annotation.Nullable;
+import android.support.design.widget.FloatingActionButton;
+import android.support.v4.app.Fragment;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Button;
 import android.widget.EditText;
-import android.widget.ImageButton;
 import android.widget.TextView;
 
 import com.zv.geochat.Constants;
@@ -34,36 +33,12 @@ public class ChatActivityFragment extends Fragment {
 
         View v = inflater.inflate(R.layout.fragment_chat, container, false);
 
-        Button btnJoinChat = (Button) v.findViewById(R.id.btnJoinChat);
-        btnJoinChat.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                joinChat();
-            }
-        });
-
-        Button btnLeaveChat = (Button) v.findViewById(R.id.btnLeaveChat);
-        btnLeaveChat.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                leaveChat();
-            }
-        });
-
-        ImageButton btnSendMessage = (ImageButton ) v.findViewById(R.id.btnSendMessage);
-        btnSendMessage.setOnClickListener(new View.OnClickListener() {
+        FloatingActionButton fab = (FloatingActionButton) v.findViewById(R.id.fab_send_message);
+        fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 sendMessage(edtMessage.getText().toString());
                 edtMessage.getText().clear();
-            }
-        });
-
-        Button btnReceiveMessage = (Button) v.findViewById(R.id.btnReceiveMessage);
-        btnReceiveMessage.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                simulateOnMessage();
             }
         });
 
@@ -85,22 +60,6 @@ public class ChatActivityFragment extends Fragment {
         getActivity().unregisterReceiver(mServiceStateChangeReceiver);
     }
 
-    private void joinChat(){
-        Bundle data = new Bundle();
-        data.putInt(ChatService.CMD, ChatService.CMD_JOIN_CHAT);
-        Intent intent = new Intent(getContext(), ChatService.class);
-        intent.putExtras(data);
-        getActivity().startService(intent);
-    }
-
-    private void leaveChat(){
-        Bundle data = new Bundle();
-        data.putInt(ChatService.CMD, ChatService.CMD_LEAVE_CHAT);
-        Intent intent = new Intent(getContext(), ChatService.class);
-        intent.putExtras(data);
-        getActivity().startService(intent);
-    }
-
     private void sendMessage(String messageText){
         Bundle data = new Bundle();
         data.putInt(ChatService.CMD, ChatService.CMD_SEND_MESSAGE);
@@ -109,16 +68,6 @@ public class ChatActivityFragment extends Fragment {
         intent.putExtras(data);
         getActivity().startService(intent);
     }
-
-    private void simulateOnMessage(){
-        Bundle data = new Bundle();
-        data.putInt(ChatService.CMD, ChatService.CMD_RECEIVE_MESSAGE);
-        Intent intent = new Intent(getContext(), ChatService.class);
-        intent.putExtras(data);
-        getActivity().startService(intent);
-    }
-
-
 
     //------- listening broadcasts from service
     /**
@@ -169,6 +118,4 @@ public class ChatActivityFragment extends Fragment {
         intentFilter.addAction(Constants.BROADCAST_USER_LEFT);
         getActivity().registerReceiver(mServiceStateChangeReceiver, intentFilter);
     }
-
-
 }
