@@ -1,4 +1,4 @@
-package com.zv.geochat.ui.adapter;
+package com.zv.geochat.adapter;
 
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;

@@ -64,7 +64,7 @@ public class MainActivity extends AppCompatActivity {
     private void loadUserNameFromPreferences() {
 
         SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(this);
-        String userName = prefs.getString(Constants.KEY_USER_NAME, "User Name");
+        String userName = prefs.getString(Constants.PREF_KEY_USER_NAME, "User Name");
 
         EditText edtUserName = (EditText) findViewById(R.id.edtUserName);
         edtUserName.setText(userName);
@@ -73,7 +73,7 @@ public class MainActivity extends AppCompatActivity {
     private void saveToPreferences(String userName) {
         SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(this);
         SharedPreferences.Editor editor = prefs.edit();
-        editor.putString(Constants.KEY_USER_NAME,userName);
+        editor.putString(Constants.PREF_KEY_USER_NAME ,userName);
         editor.apply();
     }
 }

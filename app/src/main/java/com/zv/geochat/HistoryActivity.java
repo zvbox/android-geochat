@@ -11,9 +11,9 @@ import android.support.v7.widget.Toolbar;
 import android.view.View;
 import android.widget.TextView;
 
+import com.zv.geochat.adapter.ChatMessagesAdapter;
 import com.zv.geochat.model.ChatMessage;
 import com.zv.geochat.provider.ChatMessageStore;
-import com.zv.geochat.ui.adapter.ChatMessagesAdapter;
 
 import java.util.ArrayList;
 import java.util.List;

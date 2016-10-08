@@ -46,10 +46,18 @@
                 android:value="com.zv.geochat.ChatActivity" />
         </activity>
 
-
         <provider
-            android:name="com.zv.geochat.provider.GeoChatProvider"
+            android:name=".provider.GeoChatProvider"
             android:authorities="com.zv.geochat.provider.GeoChatProvider" />
+
+        <activity
+            android:name=".SettingsActivity"
+            android:label="@string/title_activity_settings"
+            android:parentActivityName=".ChatActivity">
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value="com.zv.geochat.ChatActivity" />
+        </activity>
     </application>
 
 </manifest>

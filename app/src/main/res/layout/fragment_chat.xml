@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/content_chat"
     android:layout_width="match_parent"
@@ -8,47 +9,89 @@
     android:paddingLeft="@dimen/activity_horizontal_margin"
     android:paddingRight="@dimen/activity_horizontal_margin"
     android:paddingTop="@dimen/activity_vertical_margin"
-    tools:context="com.zv.geochat.ui.fragment.ChatActivityFragment"
+    tools:context=".fragment.ChatActivityFragment"
     tools:showIn="@layout/activity_chat">
 
 
     <LinearLayout
-        android:orientation="vertical"
+        android:orientation="horizontal"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
+        android:layout_height="wrap_content"
         android:layout_alignParentTop="true"
-        android:layout_alignParentStart="true">
+        android:layout_alignParentStart="true"
+        android:weightSum="3">
 
         <Button
-            android:text="Join Chat"
-            android:layout_width="match_parent"
+            android:text="Join"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_weight="1"
             android:id="@+id/btnJoinChat" />
 
         <Button
-            android:text="Leave Chat"
-            android:layout_width="match_parent"
+            android:text="Leave"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_weight="1"
             android:id="@+id/btnLeaveChat" />
 
-        <EditText
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:inputType="textPersonName"
-            android:ems="10"
-            android:id="@+id/edtMessage"
-            android:text="Type your message...." />
 
         <Button
-            android:text="Send"
-            android:layout_width="match_parent"
+            android:text="Receive"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:id="@+id/btnSendMessage" />
-
-        <Button
-            android:text="Simulate Receive Message"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
+            android:layout_weight="1"
             android:id="@+id/btnReceiveMessage" />
+
     </LinearLayout>
+
+    <TableLayout
+        android:id="@+id/tableLayout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:layout_centerHorizontal="true">
+
+        <TableRow
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="vertical">
+
+            <EditText
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:inputType="textLongMessage"
+                android:ems="10"
+                android:layout_weight="5"
+                android:id="@+id/edtMessage"
+                android:layout_gravity="center_vertical"
+                android:hint="Type your message...." />
+
+            <ImageButton
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_vertical"
+                app:srcCompat="@android:drawable/ic_menu_send"
+                android:id="@+id/btnSendMessage"
+                android:layout_weight="1"
+                />
+        </TableRow>
+
+    </TableLayout>
+
+    <ScrollView
+        android:id="@+id/scrollViewChat"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:scrollbars="vertical"
+        android:fillViewport="true"
+        android:layout_alignParentStart="true"
+        android:layout_above="@+id/tableLayout">
+
+        <TextView
+            android:id="@+id/txtChatLog"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent" />
+    </ScrollView>
+
 </RelativeLayout>
