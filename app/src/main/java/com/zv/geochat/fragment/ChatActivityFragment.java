@@ -13,16 +13,23 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.EditText;
+import android.widget.ListView;
 import android.widget.TextView;
 
 import com.zv.geochat.Constants;
 import com.zv.geochat.R;
+import com.zv.geochat.adapter.ChatBubbleAdapter;
+import com.zv.geochat.model.ChatMessage;
 import com.zv.geochat.service.ChatService;
+
+import java.util.ArrayList;
 
 public class ChatActivityFragment extends Fragment {
     private static final String TAG = "ChatActivityFragment";
-    EditText edtMessage;
-    private TextView txtChatLog;
+    private EditText edtMessage;
+    private ListView messageListView;
+    private ChatBubbleAdapter adapter;
+
 
     public ChatActivityFragment() {
     }
@@ -43,8 +50,9 @@ public class ChatActivityFragment extends Fragment {
         });
 
         edtMessage = (EditText) v.findViewById(R.id.edtMessage);
-        txtChatLog = (TextView) v.findViewById(R.id.txtChatLog);
-
+        messageListView = (ListView)v.findViewById(R.id.messageList);
+        adapter = new ChatBubbleAdapter(getActivity(), new ArrayList<ChatMessage>());
+        messageListView.setAdapter(adapter);
         return v;
     }
 
@@ -69,6 +77,18 @@ public class ChatActivityFragment extends Fragment {
         getActivity().startService(intent);
     }
 
+    public void displayMessage(ChatMessage message) {
+        adapter.add(message);
+        adapter.notifyDataSetChanged();
+        scroll();
+    }
+
+    private void scroll() {
+        messageListView.setSelection(messageListView.getCount() - 1);
+    }
+
+
+
     //------- listening broadcasts from service
     /**
      * Listens for service state change broadcasts
@@ -83,21 +103,26 @@ public class ChatActivityFragment extends Fragment {
             Log.d(TAG, "received broadcast message from service: " + action);
 
             if (Constants.BROADCAST_SERVER_CONNECTED.equals(action)) {
-                txtChatLog.append("> Connected\n");
+                ChatMessage chatMessage = new ChatMessage("Status: ", "Connected", true);
+                displayMessage(chatMessage);
             } else if (Constants.BROADCAST_SERVER_NOT_CONNECTED.equals(action)) {
-                txtChatLog.append("X Disconnected\n");
+                ChatMessage chatMessage = new ChatMessage("Status: ", "Disconnected", true);
+                displayMessage(chatMessage);
             } else if (Constants.BROADCAST_USER_JOINED.equals(action)) {
                 String userName = data.getString(Constants.CHAT_USER_NAME);
                 int userCount = data.getInt(Constants.CHAT_USER_COUNT, 0);
-                txtChatLog.append("> "+userName+" joined. Users: "+userCount+"\n");
+                ChatMessage chatMessage = new ChatMessage(userName, " joined. Users: "+userCount, true);
+                displayMessage(chatMessage);
             } else if (Constants.BROADCAST_USER_LEFT.equals(action)) {
                 String userName = data.getString(Constants.CHAT_USER_NAME);
                 int userCount = data.getInt(Constants.CHAT_USER_COUNT, 0);
-                txtChatLog.append("> "+userName+" left. Users: "+userCount+"\n");
+                ChatMessage chatMessage = new ChatMessage(userName, " left. Users: "+userCount, true);
+                displayMessage(chatMessage);
             } else if (Constants.BROADCAST_NEW_MESSAGE.equals(action)) {
                 String userName = data.getString(Constants.CHAT_USER_NAME);
                 String message = data.getString(Constants.CHAT_MESSAGE);
-                txtChatLog.append("> "+userName+": "+message+"\n");
+                ChatMessage chatMessage = new ChatMessage(userName, message);
+                displayMessage(chatMessage);
             } else if (Constants.BROADCAST_USER_TYPING.equals(action)) {
                 // TODO
             } else {

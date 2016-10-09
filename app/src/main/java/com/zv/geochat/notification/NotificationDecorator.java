@@ -9,6 +9,7 @@ import android.graphics.Color;
 import android.util.Log;
 
 import com.zv.geochat.ChatActivity;
+import com.zv.geochat.R;
 
 public class NotificationDecorator {
 
@@ -36,7 +37,7 @@ public class NotificationDecorator {
 
 
                 Notification noti = new Notification.Builder(context)
-                        .setSmallIcon(android.R.drawable.ic_dialog_info)
+                        .setSmallIcon(R.drawable.ic_message)
                         .setContentTitle(title)
                         .setContentText(contentText)
                         .setContentIntent(contentIntent)
@@ -67,7 +68,7 @@ public class NotificationDecorator {
 
 
                 Notification noti = new Notification.Builder(context)
-                        .setSmallIcon(android.R.drawable.ic_dialog_info)
+                        .setSmallIcon(R.drawable.ic_message)
                         .setContentTitle(title)
                         .setContentText(contentText)
                         .setContentIntent(contentIntent)

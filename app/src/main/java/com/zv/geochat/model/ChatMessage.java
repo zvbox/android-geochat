@@ -4,19 +4,25 @@ public class ChatMessage {
     private String id;
     private String userName;
     private String body;
+    private boolean statusUpdate;
 
     public ChatMessage() {
     }
 
     public ChatMessage(String userName, String body) {
-        this.userName = userName;
-        this.body = body;
+        this(null, userName, body, false);
     }
 
-    public ChatMessage(String id, String userName, String body) {
+    public ChatMessage(String userName, String body, boolean statusUpdate) {
+        this(null, userName,body,statusUpdate);
+    }
+
+
+    public ChatMessage(String id, String userName, String body, boolean statusUpdate) {
         this.id = id;
         this.userName = userName;
         this.body = body;
+        this.statusUpdate = statusUpdate;
     }
 
 
@@ -44,6 +50,10 @@ public class ChatMessage {
         this.body = body;
     }
 
+    public boolean isStatusUpdate() {
+        return statusUpdate;
+    }
+
     @Override
     public String toString() {
         return "ChatMessage{" +
@@ -52,4 +62,5 @@ public class ChatMessage {
                 ", body='" + body + '\'' +
                 '}';
     }
+
 }

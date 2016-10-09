@@ -12,21 +12,16 @@
     tools:context=".fragment.ChatActivityFragment"
     tools:showIn="@layout/activity_chat">
 
-
-    <ScrollView
-        android:id="@+id/scrollViewChat"
+    <ListView
+        android:id="@+id/messageList"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:scrollbars="vertical"
-        android:fillViewport="true"
-        android:layout_alignParentStart="true"
-        android:layout_above="@+id/tableLayout">
-
-        <TextView
-            android:id="@+id/txtChatLog"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent" />
-    </ScrollView>
+        android:layout_height="match_parent"
+        android:layout_alignParentLeft="false"
+        android:listSelector="@android:color/transparent"
+        android:transcriptMode="alwaysScroll"
+        android:divider="@null"
+        android:layout_alignParentTop="true"
+        android:layout_above="@+id/tableLayout" />
 
     <TableLayout
         android:id="@+id/tableLayout"
