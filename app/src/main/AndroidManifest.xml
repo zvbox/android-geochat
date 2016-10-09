@@ -5,18 +5,25 @@
     <uses-permission android:name="android.permission.WAKE_LOCK" />
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
 
+    <!--
+         The ACCESS_COARSE/FINE_LOCATION permissions are not required to use
+         Google Maps Android API v2, but you must specify either coarse or fine
+         location permissions for the 'MyLocation' functionality. 
+    -->
+    <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
+    <uses-permission android:name="com.google.android.providers.gsf.permission.READ_GSERVICES" />
+
     <application
         android:allowBackup="true"
         android:icon="@mipmap/ic_launcher"
         android:label="@string/app_name"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-
         <activity
             android:name=".MainActivity"
+            android:configChanges="orientation|keyboardHidden"
             android:label="@string/app_name"
             android:screenOrientation="portrait"
-            android:configChanges="orientation|keyboardHidden"
             android:theme="@style/AppTheme.NoActionBar">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -26,10 +33,10 @@
         </activity>
         <activity
             android:name=".ChatActivity"
+            android:configChanges="orientation|keyboardHidden"
             android:label="@string/title_activity_chat"
             android:parentActivityName=".MainActivity"
             android:screenOrientation="portrait"
-            android:configChanges="orientation|keyboardHidden"
             android:theme="@style/AppTheme.NoActionBar">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
@@ -43,10 +50,10 @@
 
         <activity
             android:name=".HistoryActivity"
+            android:configChanges="orientation|keyboardHidden"
             android:label="@string/title_activity_history"
             android:parentActivityName=".ChatActivity"
             android:screenOrientation="portrait"
-            android:configChanges="orientation|keyboardHidden"
             android:theme="@style/AppTheme.NoActionBar">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
@@ -59,10 +66,29 @@
 
         <activity
             android:name=".SettingsActivity"
-            android:label="@string/title_activity_settings"
-            android:screenOrientation="portrait"
             android:configChanges="orientation|keyboardHidden"
-            android:parentActivityName=".ChatActivity">
+            android:label="@string/title_activity_settings"
+            android:parentActivityName=".ChatActivity"
+            android:screenOrientation="portrait">
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value="com.zv.geochat.ChatActivity" />
+        </activity>
+        <!--
+             The API key for Google Maps-based APIs is defined as a string resource.
+             (See the file "res/values/google_maps_api.xml").
+             Note that the API key is linked to the encryption key used to sign the APK.
+             You need a different API key for each encryption key, including the release key that is used to
+             sign the APK for publishing.
+             You can define the keys for the debug and release targets in src/debug/ and src/release/. 
+        -->
+        <meta-data
+            android:name="com.google.android.geo.API_KEY"
+            android:value="@string/google_maps_key" />
+
+        <activity
+            android:name=".MapActivity"
+            android:label="@string/title_activity_map">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value="com.zv.geochat.ChatActivity" />

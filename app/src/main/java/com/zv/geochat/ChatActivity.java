@@ -52,7 +52,8 @@ public class ChatActivity extends AppCompatActivity {
             finish(); // return to login screen
             return true;
         } else if (id == R.id.action_map){
-            // TODO: open Map screen
+            Intent intent = new Intent(getApplicationContext(), MapActivity.class);
+            startActivity(intent);
             return true;
         } else if (id == R.id.action_join_test){ // test only
             joinChat();

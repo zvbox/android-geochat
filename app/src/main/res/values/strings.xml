@@ -28,5 +28,10 @@
     <string name="pref_title_vibrate">Vibrate</string>
     <string name="action_map">Map</string>
     <string name="action_leave">Leave Chat</string>
+    <string name="title_activity_map">Map</string>
+
+    <!-- Map Activity -->
+    <string name="enable_gps_title">Enable GPS</string>
+    <string name="enable_gps_message">GPS not enabled! Please enable GPS in the system settings.</string>
 
 </resources>
