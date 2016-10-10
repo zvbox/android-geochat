@@ -22,4 +22,9 @@
         android:singleLine="true"
         android:title="@string/pref_title_server_uri" />
 
+    <SwitchPreference
+        android:defaultValue="true"
+        android:key="key_share_location"
+        android:title="@string/pref_title_share_location" />
+
 </PreferenceScreen>

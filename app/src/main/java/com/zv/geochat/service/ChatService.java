@@ -117,6 +117,6 @@ public class ChatService extends Service {
     private void loadPreferences() {
         SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(this);
         myName = prefs.getString(Constants.PREF_KEY_USER_NAME, "Default Name");
-        serverUri = prefs.getString(Constants.PREF_KEY_SERVER_URI, "[undefined server uri]");
+        serverUri = prefs.getString(Constants.PREF_KEY_SERVER_URI, null);
     }
 }

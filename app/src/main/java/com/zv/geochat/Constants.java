@@ -5,6 +5,7 @@ public interface Constants {
     // preferences
     String PREF_KEY_USER_NAME ="key_user_name";
     String PREF_KEY_SERVER_URI ="key_server_uri";
+    String PREF_KEY_SHARE_LOCATION ="key_share_location";
     String PREF_KEY_NOTIFICATIONS_NEW_MESSAGE ="key_notifications_new_message";
     String PREF_KEY_NOTIFICATIONS_NEW_MESSAGE_RINGTONE ="key_notifications_new_message_ringtone";
     String PREF_KEY_NOTIFICATIONS_NEW_MESSAGE_VIBRATE ="key_notifications_new_message_vibrate";

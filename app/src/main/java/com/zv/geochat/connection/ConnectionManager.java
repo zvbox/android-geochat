@@ -30,6 +30,12 @@ public class ConnectionManager {
     }
 
     public void connectToServer(final String serverUri, String userName) {
+        if(serverUri == null || serverUri.isEmpty()){
+            Toast.makeText(context, "Set Server URI in Settings/General!",
+                    Toast.LENGTH_LONG).show();
+            return;
+        }
+
         mUserName = userName; // need it when joining chat
         initServerConnection(serverUri);
     }

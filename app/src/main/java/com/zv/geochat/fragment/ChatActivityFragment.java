@@ -4,9 +4,12 @@ import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
+import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.preference.PreferenceManager;
 import android.support.annotation.Nullable;
 import android.support.design.widget.FloatingActionButton;
+import android.support.design.widget.Snackbar;
 import android.support.v4.app.Fragment;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -19,16 +22,21 @@ import android.widget.TextView;
 import com.zv.geochat.Constants;
 import com.zv.geochat.R;
 import com.zv.geochat.adapter.ChatBubbleAdapter;
+import com.zv.geochat.location.MyLocationProvider;
 import com.zv.geochat.model.ChatMessage;
 import com.zv.geochat.service.ChatService;
 
 import java.util.ArrayList;
+import java.util.prefs.PreferenceChangeEvent;
+import java.util.prefs.PreferenceChangeListener;
 
-public class ChatActivityFragment extends Fragment {
+public class ChatActivityFragment extends Fragment implements SharedPreferences.OnSharedPreferenceChangeListener{
     private static final String TAG = "ChatActivityFragment";
     private EditText edtMessage;
     private ListView messageListView;
     private ChatBubbleAdapter adapter;
+    private MyLocationProvider myLocationProvider;
+    private boolean shareLocation;
 
 
     public ChatActivityFragment() {
@@ -53,6 +61,8 @@ public class ChatActivityFragment extends Fragment {
         messageListView = (ListView)v.findViewById(R.id.messageList);
         adapter = new ChatBubbleAdapter(getActivity(), new ArrayList<ChatMessage>());
         messageListView.setAdapter(adapter);
+        myLocationProvider = new MyLocationProvider(getContext());
+        loadPreferences();
         return v;
     }
 
@@ -68,6 +78,18 @@ public class ChatActivityFragment extends Fragment {
         getActivity().unregisterReceiver(mServiceStateChangeReceiver);
     }
 
+    @Override
+    public void onPause() {
+        super.onPause();
+        myLocationProvider.disconnect();
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        myLocationProvider.connect();
+    }
+
     private void sendMessage(String messageText){
         Bundle data = new Bundle();
         data.putInt(ChatService.CMD, ChatService.CMD_SEND_MESSAGE);
@@ -75,6 +97,13 @@ public class ChatActivityFragment extends Fragment {
         Intent intent = new Intent(getContext(), ChatService.class);
         intent.putExtras(data);
         getActivity().startService(intent);
+
+        if (shareLocation && myLocationProvider.getLastLocation()!= null){
+            Snackbar.make(getView(),
+                    "Location - lng: " + myLocationProvider.getLastLocation().getLongitude() +
+                    ", lat: " + myLocationProvider.getLastLocation().getLatitude(),
+                    Snackbar.LENGTH_LONG).show();
+        }
     }
 
     public void displayMessage(ChatMessage message) {
@@ -142,5 +171,16 @@ public class ChatActivityFragment extends Fragment {
         intentFilter.addAction(Constants.BROADCAST_USER_JOINED);
         intentFilter.addAction(Constants.BROADCAST_USER_LEFT);
         getActivity().registerReceiver(mServiceStateChangeReceiver, intentFilter);
+    }
+
+    private void loadPreferences() {
+        SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(getContext());
+        shareLocation = prefs.getBoolean(Constants.PREF_KEY_SHARE_LOCATION, false);
+    }
+
+    @Override
+    public void onSharedPreferenceChanged(SharedPreferences sharedPreferences, String key) {
+        Log.v(TAG, "onSharedPreferenceChanged() key=" + key);
+        loadPreferences();
     }
 }

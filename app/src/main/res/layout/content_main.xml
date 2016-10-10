@@ -35,4 +35,10 @@
         android:hint="Type Your Name..."
         />
 
+    <Button
+        android:text="@string/login"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/btnLogin" />
+
 </LinearLayout>
