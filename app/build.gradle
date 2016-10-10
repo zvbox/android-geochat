@@ -36,4 +36,5 @@ dependencies {
         exclude group: 'org.json', module: 'json'
     }
     testCompile 'junit:junit:4.12'
+    compile 'com.android.support:multidex:1.0.0'
 }
