@@ -113,7 +113,7 @@ public class ChatService extends Service {
             chatMessageStore.insert(new ChatMessage(testUser, testMessage));
             sendBroadcastNewMessage(testUser, testMessage);
         } else {
-            Log.w(TAG, "Ignoring Unknown Command! id=" + command);
+            Log.w(TAG, "Ignoring Unknown Command! cmd=" + command);
         }
     }
 
