@@ -55,13 +55,10 @@ public class ChatActivity extends AppCompatActivity {
             Intent intent = new Intent(getApplicationContext(), MapActivity.class);
             startActivity(intent);
             return true;
-        } else if (id == R.id.action_join_test){ // test only
+        } else if (id == R.id.action_connect){
             joinChat();
             return true;
-        } else if (id == R.id.action_receive_message_test){ // test only
-            simulateOnMessage();
-            return true;
-        } else if (id == R.id.action_leave_test){ // test only
+        } else if (id == R.id.action_disconnect){
             leaveChat();
             return true;
         }
@@ -85,24 +82,4 @@ public class ChatActivity extends AppCompatActivity {
         intent.putExtras(data);
         startService(intent);
     }
-
-    private void sendMessage(String messageText){
-        Bundle data = new Bundle();
-        data.putInt(ChatService.CMD, ChatService.CMD_SEND_MESSAGE);
-        data.putString(ChatService.KEY_MESSAGE_TEXT, messageText);
-        Intent intent = new Intent(this, ChatService.class);
-        intent.putExtras(data);
-        startService(intent);
-    }
-
-    private void simulateOnMessage(){
-        Bundle data = new Bundle();
-        data.putInt(ChatService.CMD, ChatService.CMD_RECEIVE_MESSAGE);
-        Intent intent = new Intent(this, ChatService.class);
-        intent.putExtras(data);
-        startService(intent);
-    }
-
-
-
 }

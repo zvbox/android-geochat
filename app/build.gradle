@@ -32,5 +32,8 @@ dependencies {
     compile 'co.dift.ui.swipetoaction:library:1.1'
     compile 'com.google.android.gms:play-services:9.6.1'
     compile 'com.google.code.gson:gson:2.4'
+    compile ('io.socket:socket.io-client:0.8.1') {
+        exclude group: 'org.json', module: 'json'
+    }
     testCompile 'junit:junit:4.12'
 }
