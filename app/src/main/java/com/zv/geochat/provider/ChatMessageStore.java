@@ -43,7 +43,7 @@ public class ChatMessageStore {
 				c.close();
 			}
 		}
-		Log.v(TAG, "{db} get list result: " + chatMessageList);
+		Log.v(TAG, "{db} get list result size: " + chatMessageList.size());
 		return chatMessageList;
 	}
 
@@ -85,7 +85,6 @@ public class ChatMessageStore {
 			chatMessage.setId(c.getString(indexId));
 			chatMessage.setUserName(c.getString(indexUserName));
 			String body = c.getString(indexMsgBody);
-            Log.v(TAG, "getChatMessageList -- body: " + body);
             ChatMessageBody msgBody = null;
             try{
                 msgBody = ChatMessageBody.fromJson(body);
@@ -100,8 +99,7 @@ public class ChatMessageStore {
 
 			chatMessage.setBody(msgBody);
 			list.add(chatMessage);
-
-			Log.v(TAG, "getChatMessageList -- found: " + chatMessage);
+			//Log.v(TAG, "getChatMessageList -- found: " + chatMessage);
 		}
 		return list;
 	}

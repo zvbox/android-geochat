@@ -1,5 +1,6 @@
 package com.zv.geochat;
 
+import android.Manifest;
 import android.app.AlertDialog;
 import android.content.Context;
 import android.content.DialogInterface;
@@ -10,7 +11,6 @@ import android.os.Bundle;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
-import android.Manifest;
 import android.widget.Toast;
 
 import com.google.android.gms.common.ConnectionResult;
@@ -24,10 +24,17 @@ import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.SupportMapFragment;
 import com.google.android.gms.maps.model.LatLng;
+import com.google.maps.android.clustering.ClusterManager;
+import com.zv.geochat.map.MapClusterItem;
+import com.zv.geochat.model.ChatMessage;
+import com.zv.geochat.provider.ChatMessageStore;
+
+import java.util.List;
 
 public class MapActivity extends AppCompatActivity implements OnMapReadyCallback,
         GoogleApiClient.ConnectionCallbacks,
         GoogleApiClient.OnConnectionFailedListener, LocationListener {
+    private static final String TAG ="MapActivity";
 
     public static final int PERMISSION_ACCESS_FINE_LOCATION = 1;
     private GoogleMap mMap;
@@ -39,6 +46,8 @@ public class MapActivity extends AppCompatActivity implements OnMapReadyCallback
             .setFastestInterval(16)    // 16ms = 60fps
             .setPriority(LocationRequest.PRIORITY_HIGH_ACCURACY);
     private boolean navigateToMyLocation = true;
+    private ChatMessageStore chatMessageStore;
+    private ClusterManager<MapClusterItem> clusterManager;
 
 
     @Override
@@ -55,6 +64,7 @@ public class MapActivity extends AppCompatActivity implements OnMapReadyCallback
                 .addConnectionCallbacks(this)
                 .addOnConnectionFailedListener(this)
                 .build();
+        chatMessageStore = new ChatMessageStore(this);
     }
 
     @Override
@@ -95,6 +105,19 @@ public class MapActivity extends AppCompatActivity implements OnMapReadyCallback
     public void onMapReady(GoogleMap googleMap) {
         mMap = googleMap;
         mMap.getUiSettings().setZoomControlsEnabled(true);
+        clusterManager = new ClusterManager<MapClusterItem>(this, mMap);
+        mMap.setOnCameraChangeListener(clusterManager);
+        //---- create markers
+        List<ChatMessage> chatMessageList = chatMessageStore.getList();
+        for (ChatMessage chatMessage : chatMessageList) {
+            // do something with object
+            if (chatMessage.getBody().hasLocation()){
+                MapClusterItem myItem = new MapClusterItem(chatMessage.getBody().getLat(),
+                        chatMessage.getBody().getLng());
+                //Log.v(TAG,"add cluster item: " + myItem);
+                clusterManager.addItem(myItem);
+            }
+        }
         setMyLocationEnabled();
     }
 
