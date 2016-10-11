@@ -86,11 +86,13 @@ public class ChatBubbleAdapter extends BaseAdapter {
             if(chatMessage.getBody().hasLocation()){
                 final String lat = chatMessage.getBody().getLat().toString();
                 final String lng = chatMessage.getBody().getLng().toString();
+                final String userName = chatMessage.getUserName();
                 holder.imgLocationIcon.setVisibility(View.VISIBLE);
                 holder.imgLocationIcon.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View view) {
-                        Uri gmmIntentUri = Uri.parse("geo:"+ lat +","+ lng+"?z=" + 10);
+                        //Uri gmmIntentUri = Uri.parse("geo:"+ lat +","+ lng+"("+userName+")?z=" + 10);
+                        Uri gmmIntentUri = Uri.parse("geo:0,0?q="+ lat +","+ lng+"("+userName+")");
                         Intent mapIntent = new Intent(Intent.ACTION_VIEW, gmmIntentUri);
                         mapIntent.setPackage("com.google.android.apps.maps");
                         if (mapIntent.resolveActivity(context.getPackageManager()) != null) {
