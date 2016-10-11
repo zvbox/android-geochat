@@ -24,6 +24,7 @@ import com.zv.geochat.R;
 import com.zv.geochat.adapter.ChatBubbleAdapter;
 import com.zv.geochat.location.MyLocationProvider;
 import com.zv.geochat.model.ChatMessage;
+import com.zv.geochat.model.ChatMessageBody;
 import com.zv.geochat.service.ChatService;
 
 import java.util.ArrayList;
@@ -91,19 +92,25 @@ public class ChatActivityFragment extends Fragment implements SharedPreferences.
     }
 
     private void sendMessage(String messageText){
+
+        ChatMessageBody msgBody = null;
+        if (shareLocation && myLocationProvider.getLastLocation()!= null){
+            double longitude = myLocationProvider.getLastLocation().getLongitude();
+            double latitude = myLocationProvider.getLastLocation().getLatitude();
+            msgBody = new ChatMessageBody(messageText, longitude, latitude);
+            Snackbar.make(getView(), "Location - lng: " + longitude +", lat: " + latitude,
+                    Snackbar.LENGTH_LONG).show();
+        } else {
+            msgBody = new ChatMessageBody(messageText);
+        }
+
         Bundle data = new Bundle();
         data.putInt(ChatService.CMD, ChatService.CMD_SEND_MESSAGE);
-        data.putString(ChatService.KEY_MESSAGE_TEXT, messageText);
+        data.putString(ChatService.KEY_MESSAGE_TEXT, msgBody.toJson());
         Intent intent = new Intent(getContext(), ChatService.class);
         intent.putExtras(data);
         getActivity().startService(intent);
 
-        if (shareLocation && myLocationProvider.getLastLocation()!= null){
-            Snackbar.make(getView(),
-                    "Location - lng: " + myLocationProvider.getLastLocation().getLongitude() +
-                    ", lat: " + myLocationProvider.getLastLocation().getLatitude(),
-                    Snackbar.LENGTH_LONG).show();
-        }
     }
 
     public void displayMessage(ChatMessage message) {
@@ -132,25 +139,30 @@ public class ChatActivityFragment extends Fragment implements SharedPreferences.
             Log.d(TAG, "received broadcast message from service: " + action);
 
             if (Constants.BROADCAST_SERVER_CONNECTED.equals(action)) {
-                ChatMessage chatMessage = new ChatMessage("Status: ", "Connected", true);
+                ChatMessageBody msgBody = new ChatMessageBody("Connected");
+                ChatMessage chatMessage = new ChatMessage("Status: ", msgBody, true);
                 displayMessage(chatMessage);
             } else if (Constants.BROADCAST_SERVER_NOT_CONNECTED.equals(action)) {
-                ChatMessage chatMessage = new ChatMessage("Status: ", "Disconnected", true);
+                ChatMessageBody msgBody = new ChatMessageBody("Disconnected");
+                ChatMessage chatMessage = new ChatMessage("Status: ", msgBody, true);
                 displayMessage(chatMessage);
             } else if (Constants.BROADCAST_USER_JOINED.equals(action)) {
                 String userName = data.getString(Constants.CHAT_USER_NAME);
                 int userCount = data.getInt(Constants.CHAT_USER_COUNT, 0);
-                ChatMessage chatMessage = new ChatMessage(userName, " joined. Users: "+userCount, true);
+                ChatMessageBody msgBody = new ChatMessageBody(" joined. Users: "+userCount);
+                ChatMessage chatMessage = new ChatMessage(userName, msgBody, true);
                 displayMessage(chatMessage);
             } else if (Constants.BROADCAST_USER_LEFT.equals(action)) {
                 String userName = data.getString(Constants.CHAT_USER_NAME);
                 int userCount = data.getInt(Constants.CHAT_USER_COUNT, 0);
-                ChatMessage chatMessage = new ChatMessage(userName, " left. Users: "+userCount, true);
+                ChatMessageBody msgBody = new ChatMessageBody(" left. Users: "+userCount);
+                ChatMessage chatMessage = new ChatMessage(userName, msgBody, true);
                 displayMessage(chatMessage);
             } else if (Constants.BROADCAST_NEW_MESSAGE.equals(action)) {
                 String userName = data.getString(Constants.CHAT_USER_NAME);
                 String message = data.getString(Constants.CHAT_MESSAGE);
-                ChatMessage chatMessage = new ChatMessage(userName, message);
+                ChatMessageBody msgBody = ChatMessageBody.fromJson(message);
+                ChatMessage chatMessage = new ChatMessage(userName, msgBody);
                 displayMessage(chatMessage);
             } else if (Constants.BROADCAST_USER_TYPING.equals(action)) {
                 // TODO

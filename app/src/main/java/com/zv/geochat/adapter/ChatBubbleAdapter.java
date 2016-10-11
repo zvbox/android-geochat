@@ -7,6 +7,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
@@ -68,17 +69,23 @@ public class ChatBubbleAdapter extends BaseAdapter {
 
         if (chatMessage.isStatusUpdate()){
             holder.bubbleMessageContainer.setVisibility(View.GONE);
-            holder.txtUser.setText(chatMessage.getUserName() + chatMessage.getBody());
+            holder.txtUser.setText(chatMessage.getUserName() + chatMessage.getBody().getText());
             // TODO: use a proper way - should be a part of message data
             String messageDateTime = new SimpleDateFormat("MM/dd/yyyy HH:mm").format(Calendar.getInstance().getTime());
             holder.txtInfo.setText(messageDateTime);
+            holder.imgLocationIcon.setVisibility(View.GONE);
         } else {
             holder.bubbleMessageContainer.setVisibility(View.VISIBLE);
-            holder.txtMessage.setText(chatMessage.getBody());
+            holder.txtMessage.setText(chatMessage.getBody().getText());
             holder.txtUser.setText(chatMessage.getUserName());
             // TODO: use a proper way - should be a part of message data
             String messageDateTime = new SimpleDateFormat("MM/dd/yyyy HH:mm").format(Calendar.getInstance().getTime());
             holder.txtInfo.setText(messageDateTime);
+            if(chatMessage.getBody().hasLocation()){
+                holder.imgLocationIcon.setVisibility(View.VISIBLE);
+            } else {
+                holder.imgLocationIcon.setVisibility(View.GONE);
+            }
         }
 
         return convertView;
@@ -99,6 +106,7 @@ public class ChatBubbleAdapter extends BaseAdapter {
         holder.txtMessage = (TextView) v.findViewById(R.id.txtMessage);
         holder.txtUser= (TextView) v.findViewById(R.id.txtUser);
         holder.txtInfo = (TextView) v.findViewById(R.id.txtInfo);
+        holder.imgLocationIcon = (ImageView)v.findViewById(R.id.imgLocationIcon);
         return holder;
     }
 
@@ -108,5 +116,6 @@ public class ChatBubbleAdapter extends BaseAdapter {
         public TextView txtMessage;
         public TextView txtUser;
         public TextView txtInfo;
+        public ImageView imgLocationIcon;
     }
 }

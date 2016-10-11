@@ -63,7 +63,7 @@ public class ChatMessagesAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
         ChatMessage item = items.get(position);
         ChatMessageViewHolder vh = (ChatMessageViewHolder) holder;
         vh.userName.setText(item.getUserName());
-        vh.chatMessageBody.setText(item.getBody());
+        vh.chatMessageBody.setText(item.getBody().toJson());
         vh.data = item;
     }
 }

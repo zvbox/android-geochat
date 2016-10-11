@@ -6,18 +6,30 @@ import com.google.gson.GsonBuilder;
 
 public class ChatMessageBody {
     private String text;
+    private Double lng;
+    private Double lat;
     // TODO: additional fields (e.g. lat, lng, time)
 
     public ChatMessageBody(String text){
         this.text = text;
     }
 
+    public ChatMessageBody(String text, double lng, double lat){
+        this.text = text;
+        this.lng = lng;
+        this.lat = lat;
+    }
+
     public String getText() {
         return text;
     }
 
-    public void setText(String text) {
-        this.text = text;
+    public Double getLng() { return lng; }
+
+    public Double getLat() { return lat; }
+
+    public boolean hasLocation(){
+        return lat!= null && lng != null;
     }
 
     public static ChatMessageBody fromJson(String jsonString) {

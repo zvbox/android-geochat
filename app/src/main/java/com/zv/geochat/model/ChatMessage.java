@@ -3,22 +3,22 @@ package com.zv.geochat.model;
 public class ChatMessage {
     private String id;
     private String userName;
-    private String body;
+    private ChatMessageBody body;
     private boolean statusUpdate;
 
     public ChatMessage() {
     }
 
-    public ChatMessage(String userName, String body) {
+    public ChatMessage(String userName, ChatMessageBody body) {
         this(null, userName, body, false);
     }
 
-    public ChatMessage(String userName, String body, boolean statusUpdate) {
+    public ChatMessage(String userName, ChatMessageBody body, boolean statusUpdate) {
         this(null, userName,body,statusUpdate);
     }
 
 
-    public ChatMessage(String id, String userName, String body, boolean statusUpdate) {
+    public ChatMessage(String id, String userName, ChatMessageBody body, boolean statusUpdate) {
         this.id = id;
         this.userName = userName;
         this.body = body;
@@ -30,7 +30,7 @@ public class ChatMessage {
         return userName;
     }
 
-    public String getBody() {
+    public ChatMessageBody getBody() {
         return body;
     }
 
@@ -46,7 +46,7 @@ public class ChatMessage {
         this.userName = userName;
     }
 
-    public void setBody(String body) {
+    public void setBody(ChatMessageBody body) {
         this.body = body;
     }
 
@@ -59,7 +59,7 @@ public class ChatMessage {
         return "ChatMessage{" +
                 "id='" + id + '\'' +
                 ", userName='" + userName + '\'' +
-                ", body='" + body + '\'' +
+                ", body='" + body.toJson() + '\'' +
                 '}';
     }
 

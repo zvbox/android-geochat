@@ -15,6 +15,8 @@ import com.zv.geochat.Constants;
 import com.zv.geochat.broadcast.BroadcastSender;
 import com.zv.geochat.connection.ChatEventHandler;
 import com.zv.geochat.connection.ConnectionManager;
+import com.zv.geochat.model.ChatMessage;
+import com.zv.geochat.model.ChatMessageBody;
 import com.zv.geochat.notification.NotificationDecorator;
 import com.zv.geochat.provider.ChatMessageStore;
 
@@ -25,7 +27,6 @@ public class ChatService extends Service {
     public static final int CMD_JOIN_CHAT = 10;
     public static final int CMD_LEAVE_CHAT = 20;
     public static final int CMD_SEND_MESSAGE = 30;
-    public static final int CMD_RECEIVE_MESSAGE = 40;
     public static final String KEY_MESSAGE_TEXT = "message_text";
 
     private NotificationManager notificationMgr;
@@ -107,8 +108,8 @@ public class ChatService extends Service {
             connectionManager.disconnectFromServer();
             stopSelf();
         } else if (command == CMD_SEND_MESSAGE) {
-            String messageText = (String) data.get(KEY_MESSAGE_TEXT);
-            connectionManager.attemptSend(myName, messageText);
+            String message = (String) data.get(KEY_MESSAGE_TEXT);
+            connectionManager.attemptSend(myName, message);
         } else {
             Log.w(TAG, "Ignoring Unknown Command! cmd=" + command);
         }

@@ -7,7 +7,9 @@ import android.database.Cursor;
 import android.net.Uri;
 import android.util.Log;
 
+import com.google.gson.JsonSyntaxException;
 import com.zv.geochat.model.ChatMessage;
+import com.zv.geochat.model.ChatMessageBody;
 import com.zv.geochat.provider.GeoChatProviderMetadata.*;
 
 import java.util.ArrayList;
@@ -82,8 +84,21 @@ public class ChatMessageStore {
 			ChatMessage chatMessage = new ChatMessage();
 			chatMessage.setId(c.getString(indexId));
 			chatMessage.setUserName(c.getString(indexUserName));
-			chatMessage.setBody(c.getString(indexMsgBody));
+			String body = c.getString(indexMsgBody);
+            Log.v(TAG, "getChatMessageList -- body: " + body);
+            ChatMessageBody msgBody = null;
+            try{
+                msgBody = ChatMessageBody.fromJson(body);
+                if(msgBody == null){
+                    msgBody = new ChatMessageBody("");
+                }
+            } catch (JsonSyntaxException jse){
+                // non json format, should not happen if db is clean
+                // of old records - previous milestones
+                msgBody = new ChatMessageBody(body);
+            }
 
+			chatMessage.setBody(msgBody);
 			list.add(chatMessage);
 
 			Log.v(TAG, "getChatMessageList -- found: " + chatMessage);
@@ -96,7 +111,7 @@ public class ChatMessageStore {
 		ContentResolver contentResolver = context.getContentResolver();
 		ContentValues cv = new ContentValues();
 		cv.put(ChatMessageTableMetaData.USER_NAME, chatMessage.getUserName());
-		cv.put(ChatMessageTableMetaData.MSG_BODY, chatMessage.getBody());
+		cv.put(ChatMessageTableMetaData.MSG_BODY, chatMessage.getBody().toJson());
 
 		Uri uri = ChatMessageTableMetaData.CONTENT_URI;
 		Log.v(TAG, "{db} insert uri: " + uri);
@@ -115,7 +130,7 @@ public class ChatMessageStore {
 		Log.v(TAG, "{db} +++++ add to db.... " + chatMessage);
 		ContentValues cv = new ContentValues();
 		cv.put(GeoChatProviderMetadata.ChatMessageTableMetaData.USER_NAME, chatMessage.getUserName());
-		cv.put(GeoChatProviderMetadata.ChatMessageTableMetaData.MSG_BODY, chatMessage.getBody());
+		cv.put(GeoChatProviderMetadata.ChatMessageTableMetaData.MSG_BODY, chatMessage.getBody().toJson());
 
 		Uri uri = GeoChatProviderMetadata.ChatMessageTableMetaData.CONTENT_URI;
 		Log.v(TAG, "{db} insert uri: " + uri);

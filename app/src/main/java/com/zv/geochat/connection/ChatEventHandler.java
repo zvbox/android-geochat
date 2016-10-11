@@ -2,8 +2,10 @@ package com.zv.geochat.connection;
 
 import android.util.Log;
 
+import com.google.gson.JsonSyntaxException;
 import com.zv.geochat.broadcast.BroadcastSender;
 import com.zv.geochat.model.ChatMessage;
+import com.zv.geochat.model.ChatMessageBody;
 import com.zv.geochat.notification.NotificationDecorator;
 import com.zv.geochat.provider.ChatMessageStore;
 
@@ -64,9 +66,16 @@ public class ChatEventHandler {
         try {
             String userName = data.getString(ChatMessageKey.USER_NAME);
             String message = data.getString(ChatMessageKey.MESSAGE);
-            notificationDecorator.displayExpandableNotification("New message: " + userName , message);
-            broadcastSender.sendNewMessage(userName, message);
-            chatMessageStore.insert(new ChatMessage(userName, message));
+            ChatMessageBody msgBody = null;
+            try{
+                msgBody = ChatMessageBody.fromJson(message);
+            } catch (JsonSyntaxException jse) {
+                // indication of non-json message, set as a text of body
+                msgBody = new ChatMessageBody(message);
+            }
+            notificationDecorator.displayExpandableNotification("New message: " + userName , msgBody.getText());
+            broadcastSender.sendNewMessage(userName, msgBody.toJson());
+            chatMessageStore.insert(new ChatMessage(userName, msgBody));
         } catch (JSONException e) {
             Log.e(TAG, e.getMessage());
         }
@@ -87,8 +96,9 @@ public class ChatEventHandler {
 
     public void onAttemptSend(String userName, String message) {
         Log.e(TAG, "onAttemptSend");
-        notificationDecorator.displayExpandableNotification("Sending message...", message);
+        ChatMessageBody msgBody = ChatMessageBody.fromJson(message);
+        notificationDecorator.displayExpandableNotification("Sending message...", msgBody.getText());
         broadcastSender.sendNewMessage(userName, message);
-        chatMessageStore.insert(new ChatMessage(userName, message));
+        chatMessageStore.insert(new ChatMessage(userName, msgBody));
     }
 }
