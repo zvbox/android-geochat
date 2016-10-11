@@ -2,6 +2,8 @@ package com.zv.geochat.adapter;
 
 import android.app.Activity;
 import android.content.Context;
+import android.content.Intent;
+import android.net.Uri;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -82,7 +84,20 @@ public class ChatBubbleAdapter extends BaseAdapter {
             String messageDateTime = new SimpleDateFormat("MM/dd/yyyy HH:mm").format(Calendar.getInstance().getTime());
             holder.txtInfo.setText(messageDateTime);
             if(chatMessage.getBody().hasLocation()){
+                final String lat = chatMessage.getBody().getLat().toString();
+                final String lng = chatMessage.getBody().getLng().toString();
                 holder.imgLocationIcon.setVisibility(View.VISIBLE);
+                holder.imgLocationIcon.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View view) {
+                        Uri gmmIntentUri = Uri.parse("geo:"+ lat +","+ lng+"?z=" + 10);
+                        Intent mapIntent = new Intent(Intent.ACTION_VIEW, gmmIntentUri);
+                        mapIntent.setPackage("com.google.android.apps.maps");
+                        if (mapIntent.resolveActivity(context.getPackageManager()) != null) {
+                            context.startActivity(mapIntent);
+                        }
+                    }
+                });
             } else {
                 holder.imgLocationIcon.setVisibility(View.GONE);
             }
