@@ -54,4 +54,8 @@
     <string name="about_title">About</string>
     <string name="about_app_description">Geo Chat instant messaging application</string>
 
+    <!-- AdMob ad unit IDs -->
+    <string name="banner_home_footer">ca-app-pub-0664570763252260/3326522424</string>
+    <string name="interstitial_full_screen">ca-app-pub-0664570763252260/1769900428</string>
+
 </resources>
