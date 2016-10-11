@@ -1,11 +1,15 @@
 package com.zv.geochat;
 
+import android.app.AlertDialog;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
 import android.support.design.widget.FloatingActionButton;
+import android.support.v4.view.MenuItemCompat;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.ShareActionProvider;
 import android.support.v7.widget.Toolbar;
 import android.view.View;
 import android.view.Menu;
@@ -43,7 +47,19 @@ public class MainActivity extends AppCompatActivity {
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.
         getMenuInflater().inflate(R.menu.menu_main, menu);
+        buildShareAction(menu);
         return true;
+    }
+
+    private void buildShareAction(Menu menu) {
+        MenuItem item = menu.findItem(R.id.action_share);
+        ShareActionProvider shareActionProvider = new ShareActionProvider(this);
+        Intent shareIntent = new Intent(Intent.ACTION_SEND);
+        shareIntent.putExtra(Intent.EXTRA_SUBJECT, getString(R.string.share_subject));
+        shareIntent.putExtra(Intent.EXTRA_TEXT, getString(R.string.share_text));
+        shareIntent.setType("text/plain");
+        MenuItemCompat.setActionProvider(item, shareActionProvider);
+        shareActionProvider.setShareIntent(shareIntent);
     }
 
     @Override
@@ -58,7 +74,22 @@ public class MainActivity extends AppCompatActivity {
             Intent intent = new Intent(getApplicationContext(), SettingsActivity.class);
             startActivity(intent);
             return true;
+        } else if (id == R.id.action_about) {
+
+            AlertDialog.Builder builder = new AlertDialog.Builder(this);
+            builder.setTitle(getString(R.string.about_title))
+                    .setMessage(getString(R.string.about_app_description))
+                    .setPositiveButton(android.R.string.ok, new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialog, int id) {
+                        }
+                    });
+            AlertDialog dialog = builder.create();
+            dialog.show();
+
+            return true;
         }
+
 
         return super.onOptionsItemSelected(item);
     }

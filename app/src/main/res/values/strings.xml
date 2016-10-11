@@ -17,6 +17,8 @@
     <string name="pref_title_server_uri">Server URI</string>
     <string name="pref_default_server_uri">http://chat.socket.io</string>
 
+    <string name="pref_title_share_location">Share Location</string>
+
     <!-- Example settings for Notifications -->
     <string name="pref_header_notifications">Notifications</string>
 
@@ -27,6 +29,7 @@
 
     <string name="pref_title_vibrate">Vibrate</string>
     <string name="title_activity_map">Map</string>
+
 
     <!-- Main Activity -->
     <string name="login">Login</string>
@@ -40,6 +43,15 @@
     <string name="action_leave">Leave Chat</string>
     <string name="action_connect">Connect</string>
     <string name="action_disconnect">Disconnect</string>
-    <string name="pref_title_share_location">Share Location</string>
+    <string name="action_about">About</string>
+    <string name="action_share">Share</string>
+
+    <!-- Share text -->
+    <string name="share_subject">Geo Chat app for Android</string>
+    <string name="share_text">Geo Chat app - chat with the whole world on the map! [Link to the app]</string>
+
+    <!-- About Info -->
+    <string name="about_title">About</string>
+    <string name="about_app_description">Geo Chat instant messaging application</string>
 
 </resources>
