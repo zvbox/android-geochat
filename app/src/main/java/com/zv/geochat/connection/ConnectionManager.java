@@ -1,6 +1,8 @@
 package com.zv.geochat.connection;
 
 import android.content.Context;
+import android.os.Handler;
+import android.os.Looper;
 import android.util.Log;
 import android.widget.Toast;
 
@@ -31,8 +33,7 @@ public class ConnectionManager {
 
     public void connectToServer(final String serverUri, String userName) {
         if(serverUri == null || serverUri.isEmpty()){
-            Toast.makeText(context, "Set Server URI in Settings/General!",
-                    Toast.LENGTH_LONG).show();
+            showToast("Set Server URI in Settings/General!");
             return;
         }
 
@@ -41,9 +42,8 @@ public class ConnectionManager {
     }
 
     public void disconnectFromServer() {
-        if (socket == null || !socket.connected()) {
-            Toast.makeText(context, "Server not connected!",
-                    Toast.LENGTH_LONG).show();
+        if (socket == null) {
+            showToast("Server not connected!");
             return;
         }
         closeServerConnection();
@@ -104,13 +104,24 @@ public class ConnectionManager {
 
     public void attemptSend(String userName, String message) {
         if (socket == null || !socket.connected()) {
-            Toast.makeText(context, "Server not connected! Message not sent.",
-                    Toast.LENGTH_LONG).show();
+            showToast("Server not connected! Message not sent.");
             return;
         }
         // perform the sending message attempt.
         socket.emit(ChatEvent.NEW_MESSAGE, message);
         chatEventHandler.onAttemptSend(userName, message);
+    }
+
+    private void showToast(final String text){
+        Handler handler = new Handler(Looper.getMainLooper());
+
+        handler.postDelayed(new Runnable() {
+            @Override
+            public void run() {
+                Toast.makeText(context, text,
+                        Toast.LENGTH_LONG).show();
+            }
+        }, 1000 );
     }
 
     ///////////////////////////////////////////////////
@@ -138,8 +149,7 @@ public class ConnectionManager {
         @Override
         public void call(Object... args) {
             Log.v(TAG, "Connect Error " + args[0]);
-            Toast.makeText(context, "Server connection error: " + args[0],
-                    Toast.LENGTH_LONG).show();
+            showToast("Server connection error: " + args[0]);
             connected = false;
         }
     };
@@ -147,8 +157,7 @@ public class ConnectionManager {
         @Override
         public void call(Object... args) {
             Log.v(TAG, "Connect Timeout " + args[0]);
-            Toast.makeText(context, "Server connection timeout: " + args[0],
-                    Toast.LENGTH_LONG).show();
+            showToast("Server connection timeout: " + args[0]);
             connected = false;
         }
     };
