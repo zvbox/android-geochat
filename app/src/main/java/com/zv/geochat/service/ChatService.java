@@ -20,6 +20,7 @@ public class ChatService extends Service {
     public static final int CMD_SEND_MESSAGE = 30;
     public static final int CMD_RECEIVE_MESSAGE = 40;
     public static final int Connect_Error = 13;
+    public static final int Random_UID = 50;
     public static final String KEY_MESSAGE_TEXT = "message_text";
     public static final String KEY_USER_NAME = "user_name";
 
@@ -101,7 +102,12 @@ public class ChatService extends Service {
             String testUser = "Connection ERROR";
             String testMessage = "Connect Error:"+Connect_Error;
             notificationDecorator.displaySimpleNotification("Connect Error: " + testUser, testMessage);
-        } else {
+        }
+        else if (command == Random_UID) {
+            String testUser = "Chat Service Recieved:";
+            String testMessage = "Chat Service Recieved:"+ data.getString("RANDOM_UID");
+            notificationDecorator.displaySimpleNotification("Chat Service Recieved: " + testUser, testMessage);
+        }else {
             Log.w(TAG, "Ignoring Unknown Command! id=" + command);
         }
     }

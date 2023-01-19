@@ -46,4 +46,30 @@ public class NotificationDecorator {
             Log.e(TAG, e.getMessage());
         }
     }
+    public void displaySimpleNotification(String title, String contentText, String RANDOM_UID) {
+        Intent intent = new Intent(context, ChatActivity.class);
+        intent.putExtra("RANDOM_UID", RANDOM_UID);
+        intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP |
+                Intent.FLAG_ACTIVITY_SINGLE_TOP);
+        PendingIntent contentIntent = PendingIntent.getActivity(context, 0,
+                intent, PendingIntent.FLAG_UPDATE_CURRENT);
+
+        // notification message
+        try {
+
+
+            Notification noti = new Notification.Builder(context)
+                    .setSmallIcon(android.R.drawable.ic_dialog_info)
+                    .setContentTitle(title)
+                    .setContentText(contentText)
+                    .setContentIntent(contentIntent)
+                    .setAutoCancel(true)
+                    .build();
+
+            noti.flags |= Notification.FLAG_AUTO_CANCEL;
+            notificationMgr.notify(0, noti);
+        } catch (IllegalArgumentException e) {
+            Log.e(TAG, e.getMessage());
+        }
+    }
 }

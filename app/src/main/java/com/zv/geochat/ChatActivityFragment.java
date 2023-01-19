@@ -19,6 +19,7 @@ public class ChatActivityFragment extends Fragment {
     EditText edtMessage;
     String userName = "user1";
     public static final int x = 13;
+
     public ChatActivityFragment() {
     }
 
@@ -77,6 +78,13 @@ public class ChatActivityFragment extends Fragment {
                 simulateOnMessage();
             }
         });
+        Button btnsendRandomId = (Button) v.findViewById(R.id.btnsendRandomId);
+        btnsendRandomId.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                sendRandomID();
+            }
+        });
 
         edtMessage = (EditText) v.findViewById(R.id.edtMessage);
 
@@ -132,4 +140,13 @@ public class ChatActivityFragment extends Fragment {
         getActivity().startService(intent);
     }
 
+    private void sendRandomID(){
+        Bundle data = new Bundle();
+        data.putInt(ChatService.MSG_CMD, ChatService.Random_UID);
+        data.putString("RANDOM_UID" , String.valueOf(System.currentTimeMillis()));
+        Intent intent = new Intent(getContext(), ChatService.class);
+        intent.putExtras(data);
+        getActivity().startService(intent);
+
+    }
 }
