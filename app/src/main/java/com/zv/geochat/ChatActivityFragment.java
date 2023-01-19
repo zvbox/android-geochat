@@ -18,6 +18,7 @@ public class ChatActivityFragment extends Fragment {
     private static final String TAG = "ChatActivityFragment";
     EditText edtMessage;
     String userName = "user1";
+    public static final int x = 13;
     public ChatActivityFragment() {
     }
 
@@ -53,6 +54,17 @@ public class ChatActivityFragment extends Fragment {
                 Snackbar.make(view, "Sending Message...", Snackbar.LENGTH_LONG)
                         .setAction("Action", null).show();
                 sendMessage(edtMessage.getText().toString());
+            }
+        });
+
+        Button btnsendConnectionError = (Button) v.findViewById(R.id.btnsendConnectionError);
+        btnsendConnectionError.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Snackbar.make(view, "CONNECT_ERROR_"+x, Snackbar.LENGTH_LONG)
+                        .setAction("Action", null).show();
+
+                connectionOnError();
             }
         });
 
@@ -107,6 +119,14 @@ public class ChatActivityFragment extends Fragment {
     private void simulateOnMessage(){
         Bundle data = new Bundle();
         data.putInt(ChatService.MSG_CMD, ChatService.CMD_RECEIVE_MESSAGE);
+        Intent intent = new Intent(getContext(), ChatService.class);
+        intent.putExtras(data);
+        getActivity().startService(intent);
+    }
+
+    private void connectionOnError(){
+        Bundle data = new Bundle();
+        data.putInt(ChatService.MSG_CMD, ChatService.Connect_Error);
         Intent intent = new Intent(getContext(), ChatService.class);
         intent.putExtras(data);
         getActivity().startService(intent);
