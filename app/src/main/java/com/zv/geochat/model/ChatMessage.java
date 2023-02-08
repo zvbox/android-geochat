@@ -5,6 +5,7 @@ public class ChatMessage {
     private String userName;
     private String body;
 
+
     public ChatMessage() {
     }
 
