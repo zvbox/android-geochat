@@ -27,6 +27,7 @@ public class GeoChatProvider extends ContentProvider {
         sGroupsProjectionMap.put(ChatMessageTableMetaData._ID, ChatMessageTableMetaData._ID);
         sGroupsProjectionMap.put(ChatMessageTableMetaData.USER_NAME, ChatMessageTableMetaData.USER_NAME);
         sGroupsProjectionMap.put(ChatMessageTableMetaData.MSG_BODY, ChatMessageTableMetaData.MSG_BODY);
+        sGroupsProjectionMap.put(ChatMessageTableMetaData.CHAT_MESSAGE_DATE, ChatMessageTableMetaData.CHAT_MESSAGE_DATE); //Assignment 2 date
     }
 
 

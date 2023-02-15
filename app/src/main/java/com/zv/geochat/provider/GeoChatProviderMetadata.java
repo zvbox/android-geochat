@@ -7,7 +7,7 @@ public class GeoChatProviderMetadata {
 
 	public static final String AUTHORITY = "com.zv.geochat.provider.GeoChatProvider";
 	public static final String DATABASE_NAME = "geochat.db";
-	public static final int DATABASE_VERSION = 1;
+	public static final int DATABASE_VERSION = 4;
 
 	private GeoChatProviderMetadata() {
 	}
@@ -27,5 +27,8 @@ public class GeoChatProviderMetadata {
 		// string type
 		public static final String USER_NAME = "user_name";
 		public static final String MSG_BODY = "msg_body";
+		// Assignment 2 additional columns
+		public static final String CHAT_MESSAGE_DATE = "msg_date";
+
 	}
 }

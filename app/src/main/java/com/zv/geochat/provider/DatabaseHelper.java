@@ -48,7 +48,8 @@ class DatabaseHelper extends SQLiteOpenHelper {
         db.execSQL("CREATE TABLE IF NOT EXISTS " + ChatMessageTableMetaData.TABLE_NAME + " ("
                 + ChatMessageTableMetaData._ID + " INTEGER PRIMARY KEY,"
                 + ChatMessageTableMetaData.USER_NAME + " TEXT,"
-                + ChatMessageTableMetaData.MSG_BODY + " TEXT"
+                + ChatMessageTableMetaData.MSG_BODY + " TEXT,"
+                + ChatMessageTableMetaData.CHAT_MESSAGE_DATE + " INTEGER" //Assignment 2 - Date creating as Text/String
                 + ");");
     }
 }

@@ -25,6 +25,9 @@ public class ChatMessagesAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
         public TextView userName;
         public TextView chatMessageBody;
         public ImageView imageView;
+        //Declaring Message ID and Message Date for Assignment 2
+        public TextView messageID;
+        public TextView messageDate;
 
         public ChatMessageViewHolder(View v) {
             super(v);
@@ -32,6 +35,9 @@ public class ChatMessagesAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
             userName = (TextView) v.findViewById(R.id.userName);
             chatMessageBody = (TextView) v.findViewById(R.id.body);
             imageView = (ImageView) v.findViewById(R.id.image);
+            //create to map the text view for date field and id here - Assignment 2
+            messageID = (TextView) v.findViewById(R.id.msgID);
+            messageDate = (TextView) v.findViewById(R.id.msgDate);
         }
     }
 
@@ -65,5 +71,8 @@ public class ChatMessagesAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
         vh.userName.setText(item.getUserName());
         vh.chatMessageBody.setText(item.getBody());
         vh.data = item;
+        //doing the same for id and date - Assignment 2
+        vh.messageID.setText("  Message ID: " + item.getId());
+        vh.messageDate.setText("    " + item.getChatDate());
     }
 }

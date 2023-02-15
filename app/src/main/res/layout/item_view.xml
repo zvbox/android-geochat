@@ -42,11 +42,11 @@
 
     <!-- this is the item front view -->
     <RelativeLayout
-        android:tag="front"
-        android:background="@color/item_background"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:padding="@dimen/item_padding">
+        android:layout_height="120dp"
+        android:background="@color/item_background"
+        android:padding="@dimen/item_padding"
+        android:tag="front">
 
         <ImageView
             android:id="@+id/image"
@@ -66,10 +66,26 @@
 
         <TextView
             android:id="@+id/body"
-            android:layout_below="@+id/userName"
-            android:layout_alignLeft="@+id/userName"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_below="@+id/userName"
+            android:layout_alignLeft="@+id/userName"
+            android:textSize="14dp" />
+
+        <TextView
+            android:id="@+id/msgID"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/image"
+            android:text="ID:"
+            android:textSize="14dp" />
+
+        <TextView
+            android:id="@+id/msgDate"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_toRightOf="@id/userName"
+            android:text="Date:"
             android:textSize="14dp" />
     </RelativeLayout>
 

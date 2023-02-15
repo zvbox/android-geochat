@@ -26,6 +26,8 @@ public class ChatService extends Service {
     public static final int CMD_LEAVE_CHAT = 20;
     public static final int CMD_SEND_MESSAGE = 30;
     public static final int CMD_RECEIVE_MESSAGE = 40;
+    public static final int CMD_CONNECT_ERROR_00 = 00; //Assignment 1 error code
+    public static final int CMD_SEND_RANDOM_ID = 50; //Assignment 1 Random ID
     public static final String KEY_MESSAGE_TEXT = "message_text";
     public static final String KEY_USER_NAME = "user_name";
 
@@ -110,6 +112,13 @@ public class ChatService extends Service {
             String testMessage = "Simulated Message";
             notificationDecorator.displaySimpleNotification("New message...: "+ testUser, testMessage);
             chatMessageStore.insert(new ChatMessage(testUser, testMessage));
+        } else if (command == CMD_CONNECT_ERROR_00) { //Assignment 1 error code
+            String errorCode = "00";
+            String testMessage = "Simulated Message";
+            notificationDecorator.displaySimpleNotification("Connect Error:"+ errorCode, testMessage);
+        } else if (command == CMD_SEND_RANDOM_ID) { //Assignment 1 Random ID
+            String messageText = (String) data.get(KEY_MESSAGE_TEXT);
+            notificationDecorator.displaySimpleNotification("ChatService Recieved:", messageText);
         } else {
             Log.w(TAG, "Ignoring Unknown Command! id=" + command);
         }
